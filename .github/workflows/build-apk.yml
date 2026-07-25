@@ -1,9 +1,9 @@
 name: Build Debug APK
 
 on:
-  push: # 当代码推送到以下分支时触发
+  push:
     branches: [ main, master ]
-  workflow_dispatch: # 允许你手动在 Actions 页面点击按钮运行
+  workflow_dispatch:
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '17' # 根据项目需要可调整为 11 或 21
+          java-version: '17'
 
       - name: Setup Gradle cache
         uses: gradle/gradle-build-action@v3
@@ -25,7 +25,7 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # 版本已更新
         with:
-          name: app-debug
+          name: app-debug  # 确保这个名字在 workflow 中是唯一的
           path: app/build/outputs/apk/debug/*.apk
