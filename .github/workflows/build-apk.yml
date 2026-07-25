@@ -1,0 +1,31 @@
+name: Build Debug APK
+
+on:
+  push: # 当代码推送到以下分支时触发
+    branches: [ main, master ]
+  workflow_dispatch: # 允许你手动在 Actions 页面点击按钮运行
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17' # 根据项目需要可调整为 11 或 21
+
+      - name: Setup Gradle cache
+        uses: gradle/gradle-build-action@v3
+
+      - name: Build debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-debug
+          path: app/build/outputs/apk/debug/*.apk
