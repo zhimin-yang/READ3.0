@@ -21,11 +21,15 @@ jobs:
       - name: Setup Gradle cache
         uses: gradle/gradle-build-action@v3
 
+      # 新增这个步骤，解决权限问题
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
       - name: Build debug APK
         run: ./gradlew assembleDebug
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4  # 版本已更新
+        uses: actions/upload-artifact@v4
         with:
-          name: app-debug  # 确保这个名字在 workflow 中是唯一的
+          name: app-debug
           path: app/build/outputs/apk/debug/*.apk
